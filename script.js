@@ -88,6 +88,15 @@
     lessonDetail.addEventListener('click',event=>{if(event.target.id==='copyPrompt'){navigator.clipboard?.writeText(document.querySelector('#lessonPrompt').textContent);event.target.textContent='คัดลอกแล้ว ✓';event.target.classList.add('done');setTimeout(()=>{event.target.textContent='คัดลอก Prompt';event.target.classList.remove('done')},1400)}if(event.target.id==='completeLesson'){completedLessons.has(activeLesson)?completedLessons.delete(activeLesson):completedLessons.add(activeLesson);localStorage.setItem('n9-completed-lessons',JSON.stringify([...completedLessons]));renderLessonMenu();renderLesson();}});
     renderLessonMenu(); renderLesson();
 
+    const teachingScripts = [
+      { tag:'WHAT IF · 45 วินาที', title:'สอนคิดไอเดีย What If', desc:'สอนผู้ชมเปลี่ยนคำถามธรรมดาให้กลายเป็น Hook ของคลิป AI', flow:['Hook: ถ้าพรุ่งนี้ไม่มีพระอาทิตย์ล่ะ?','สาธิต: ให้ AI แตกไอเดียเป็น 10 ฉาก','สรุป: เลือกไอเดียที่เห็นภาพและมีจุดพลิก'], prompt:'เขียนสคริปต์คลิปสอนภาษาไทย 45 วินาที อธิบายวิธีคิดไอเดีย What If สำหรับวิดีโอ AI โดยมี Hook, สาธิต 3 ขั้นตอน และ CTA ให้ผู้ชมลองทำตาม' },
+      { tag:'FLAT 2D · 60 วินาที', title:'สอนสร้างตัวละคร Flat 2D', desc:'สอนการเขียน Prompt ให้ตัวละครคงหน้าตาเดิมทุกฉาก', flow:['Hook: ทำไมตัวละคร AI เปลี่ยนหน้าทุกฉาก?','สาธิต: ทำ Character sheet + reference','สรุป: ใส่สี เสื้อผ้า และมุมมองให้ครบ'], prompt:'เขียนสคริปต์คลิปสอนภาษาไทย 60 วินาที สอนสร้างตัวละคร Flat 2D ให้คงที่ด้วย Character sheet และ Prompt พร้อมตัวอย่างก่อนและหลัง' },
+      { tag:'ZOMBIE · 50 วินาที', title:'สอนทำคลิป Zombie Apocalypse', desc:'สอน workflow ตั้งแต่ Story, ภาพ, เสียง จน Export เป็น Shorts', flow:['Hook: ถ้าเมืองของคุณโดนซอมบี้บุกคืนนี้?','สาธิต: แบ่งเรื่อง 10 ฉากและสร้างภาพ 9:16','สรุป: ใส่เสียงพากย์แล้ว Export MP4'], prompt:'เขียนสคริปต์คลิปสอนภาษาไทย 50 วินาที สอนทำวิดีโอ Zombie Apocalypse ด้วย AI ตั้งแต่คิด Story แบ่ง 10 ฉาก สร้างภาพ ใส่เสียง และ Export 1080x1920' }
+    ];
+    const scriptGrid=document.querySelector('#scriptGrid');
+    scriptGrid.innerHTML=teachingScripts.map((item,index)=>`<article class="script-card"><span class="script-tag">${item.tag}</span><h3>${item.title}</h3><p>${item.desc}</p><div class="script-flow">${item.flow.map((step,stepIndex)=>`<span><b>${stepIndex+1}</b>${step}</span>`).join('')}</div><button class="copy-script" data-script="${index}">คัดลอก Prompt สคริปต์</button><textarea class="script-source" aria-hidden="true">${item.prompt}</textarea></article>`).join('');
+    scriptGrid.addEventListener('click',event=>{const button=event.target.closest('[data-script]');if(!button)return;const source=button.parentElement.querySelector('.script-source').value;navigator.clipboard?.writeText(source);button.textContent='คัดลอกแล้ว ✓';button.classList.add('done');setTimeout(()=>{button.textContent='คัดลอก Prompt สคริปต์';button.classList.remove('done')},1400)});
+
     function setupCountdown() {
       const target = Date.now() + (9 * 86400 + 15 * 3600 + 5 * 60 + 31) * 1000;
       const ids = ['countDays','countHours','countMins','countSecs'];
