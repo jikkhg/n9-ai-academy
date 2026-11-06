@@ -10,13 +10,22 @@
       { name:'06 · Export MP4', thai:'ตรวจงานและเตรียมโพสต์', person:'ประกอบเป็นคลิปจริง', initials:'06', accent:'#55a476', avatar:'linear-gradient(135deg,#9fe2ae,#4f8da2)', projects:'1', rating:'1080p', reviews:'MP4', price:'10 นาที', service:'ตรวจ Safe area และ Export 1080 × 1920', works:['#264e58','#c2a26b','#cf7083'], teach:'เช็กเสียง ซับ ลิขสิทธิ์ และสัดส่วนแนวตั้ง ก่อน Export เป็น MP4', prompt:'สร้างเช็กลิสต์ตรวจคลิป Shorts ก่อน Export: 1080x1920, H.264 MP4, เสียงตรงภาพ, ซับ, safe area, ลิขสิทธิ์', output:'ได้คลิป AI พร้อมโพสต์' }
     ];
 
+    const workflowLessons = [
+      { title:'สร้างคำถามที่คนอยากหยุดดู', intro:'เริ่มด้วยสิ่งใกล้ตัว แล้วบิดกติกาเพียงหนึ่งอย่าง เพื่อให้คนดูนึกภาพออกในทันที', steps:['เขียนของคุ้นเคย 3 อย่าง เช่น ตลาดนัด รถไฟฟ้า หรือข้าวมันไก่','เติมคำว่า What if แล้วเปลี่ยนสถานที่ กฎ หรือเวลาให้ผิดจากความจริง','เลือกไอเดียที่ตอบต่อได้ว่า ใครเจอปัญหาอะไร และจบอย่างไร'], check:['ไอเดียอธิบายได้ในหนึ่งประโยค','มีภาพแรกที่ทำให้คนหยุดดูได้','มีปัญหาที่พาเรื่องไปต่อ'] },
+      { title:'ทำ Storyboard 10 ฉาก', intro:'เปลี่ยนไอเดียเดียวให้กลายเป็นคลิปที่มีจุดเริ่ม จุดพีค และตอนจบใน 45 วินาที', steps:['ฉาก 1 คือ Hook ความยาว 3–5 วินาที','ฉาก 2–8 อธิบายโลกใหม่และเพิ่มปัญหาทีละนิด','ฉาก 9–10 ให้จุดพลิกและประโยคชวนคอมเมนต์'], check:['แต่ละฉากยาว 3–6 วินาที','มีคำบรรยายและภาพที่เห็นชัด','เหตุการณ์ต่อกันโดยไม่กระโดด'] },
+      { title:'ล็อกหน้าตาตัวละคร', intro:'ทำ Character sheet ก่อนสร้างฉาก เพื่อให้ AI ไม่เปลี่ยนหน้า เสื้อผ้า หรือสีหลักของตัวละคร', steps:['ระบุอายุ ทรงผม เสื้อผ้า สี และพร็อพชิ้นสำคัญ','สร้างภาพด้านหน้า ด้านข้าง ด้านหลัง และ close-up','บันทึกคำอธิบายตัวละครชุดเดียวไว้ใช้ในทุก Prompt'], check:['มีภาพอ้างอิงอย่างน้อย 3 มุม','สีและเครื่องแต่งกายระบุชัด','ไม่มีข้อความหรือโลโก้ในภาพ'] },
+      { title:'สร้างภาพแนวตั้งทีละฉาก', intro:'ใช้ Shot list เป็นตัวนำ ไม่สร้างภาพจากคำกว้าง ๆ เพื่อให้ทุกเฟรมเล่าเรื่องเดียวกัน', steps:['เริ่ม Prompt ด้วยสไตล์และอัตราส่วน vertical 9:16','ใส่ตัวละครเดิม สถานที่ การกระทำ มุมกล้อง และแสง','ตรวจภาพทีละฉาก แล้วเลือก 1 ภาพที่ต่อกับฉากก่อนหน้าได้'], check:['ได้ภาพครบ 10 ฉาก','องค์ประกอบไม่ชนพื้นที่ซับ','สไตล์และตัวละครเหมือนกันทุกฉาก'] },
+      { title:'ใส่เสียงและขยับภาพ', intro:'ภาพนิ่งจะน่าดูขึ้นเมื่อเสียงพากย์ชัด และการขยับกล้องพอดีกับอารมณ์ของฉาก', steps:['ตัดบทพากย์เป็นประโยคสั้น อ่านได้ฉากละ 3–6 วินาที','สร้างเสียงที่มีสิทธิ์ใช้งานและฟังออกชัดเจน','ใช้ zoom, pan หรือ parallax เบา ๆ โดยไม่ทำให้ภาพสั่น'], check:['เสียงพากย์จบในเวลาของฉาก','มีซับตัวใหญ่ อ่านง่าย','เพลงและเสียงเอฟเฟกต์ไม่กลบคำพูด'] },
+      { title:'ตรวจและ Export พร้อมโพสต์', intro:'ตรวจคลิปให้ครบก่อนส่งออก เพื่อให้ภาพไม่โดนครอป เสียงไม่หลุด และใช้บน Shorts ได้ทันที', steps:['ดูคลิปเต็มหนึ่งรอบพร้อมเปิดเสียงและอ่านซับ','ตรวจ Safe area ด้านบนและล่างของทุกฉาก','Export เป็น H.264 MP4 ขนาด 1080 × 1920 แล้วทดสอบบนมือถือ'], check:['ไฟล์เป็น MP4 แนวตั้ง 1080 × 1920','ภาพ เสียง และซับซิงก์กัน','ตรวจลิขสิทธิ์ภาพ เสียง และเพลงแล้ว'] }
+    ];
+
     const roleList = document.querySelector('#roleList');
     const profileCard = document.querySelector('#profileCard');
     const skeleton = document.querySelector('#profileSkeleton');
     let activeRole = -1;
 
     function roleTemplate(role) {
-      return `<div class="profile-top"><div class="profile-avatar" style="background:${role.avatar}">${role.initials}</div><div><div class="profile-name">${role.person}</div><div class="profile-role">${role.thai}</div></div><a class="profile-follow" href="#lessons">เปิดบทเรียน</a></div><div class="profile-stats"><div class="profile-stat"><b>${role.projects}</b><span>ผลลัพธ์</span></div><div class="profile-stat"><b>${role.rating}</b><span>สเปก</span></div><div class="profile-stat"><b>${role.reviews}</b><span>สิ่งที่ใช้</span></div><div class="profile-stat"><b>STEP</b><span>${role.initials}</span></div></div><div class="workflow-teach"><div class="workflow-label">ทำอะไรในขั้นนี้</div><p>${role.teach}</p><div class="workflow-output"><b>ผลลัพธ์</b><span>${role.output}</span></div></div><div class="profile-tabs"><b>Prompt พร้อมใช้</b><span>ทำตามทีละขั้น</span></div><div class="workflow-prompt">${role.prompt}</div><button class="copy-workflow" data-workflow-prompt="${role.prompt.replace(/"/g,'&quot;')}">คัดลอก Prompt</button><div class="profile-service"><div class="service-dot" style="--accent-card:${role.accent}"></div><div class="service-copy"><b>${role.service}</b><span>ทำเสร็จแล้วไปขั้นถัดไป</span></div><div class="service-price">${role.price}</div></div>`;
+      return `<div class="profile-top"><div class="profile-avatar" style="background:${role.avatar}">${role.initials}</div><div><div class="profile-name">${role.person}</div><div class="profile-role">${role.thai}</div></div><button class="profile-follow open-workflow" type="button" data-workflow-index="${activeRole}">เปิดบทเรียน</button></div><div class="profile-stats"><div class="profile-stat"><b>${role.projects}</b><span>ผลลัพธ์</span></div><div class="profile-stat"><b>${role.rating}</b><span>สเปก</span></div><div class="profile-stat"><b>${role.reviews}</b><span>สิ่งที่ใช้</span></div><div class="profile-stat"><b>STEP</b><span>${role.initials}</span></div></div><div class="workflow-teach"><div class="workflow-label">ทำอะไรในขั้นนี้</div><p>${role.teach}</p><div class="workflow-output"><b>ผลลัพธ์</b><span>${role.output}</span></div></div><div class="profile-tabs"><b>Prompt พร้อมใช้</b><span>ทำตามทีละขั้น</span></div><div class="workflow-prompt">${role.prompt}</div><button class="copy-workflow" data-workflow-prompt="${role.prompt.replace(/"/g,'&quot;')}">คัดลอก Prompt</button><div class="profile-service"><div class="service-dot" style="--accent-card:${role.accent}"></div><div class="service-copy"><b>${role.service}</b><span>ทำเสร็จแล้วไปขั้นถัดไป</span></div><div class="service-price">${role.price}</div></div>`;
     }
 
     roles.forEach((role, index) => {
@@ -38,7 +47,7 @@
     }
 
     setRole(0, false);
-    profileCard.addEventListener('click', event => { const button=event.target.closest('.copy-workflow'); if(!button) return; navigator.clipboard?.writeText(button.dataset.workflowPrompt); button.textContent='คัดลอกแล้ว ✓'; button.classList.add('done'); setTimeout(()=>{button.textContent='คัดลอก Prompt';button.classList.remove('done')},1400); });
+    profileCard.addEventListener('click', event => { const opener=event.target.closest('.open-workflow'); if(opener){openWorkflowLesson(Number(opener.dataset.workflowIndex));return;} const button=event.target.closest('.copy-workflow'); if(!button) return; navigator.clipboard?.writeText(button.dataset.workflowPrompt); button.textContent='คัดลอกแล้ว ✓'; button.classList.add('done'); setTimeout(()=>{button.textContent='คัดลอก Prompt';button.classList.remove('done')},1400); });
     const rolesSection = document.querySelector('#roles');
     const roleFromProgress = progress => Math.min(roles.length - 1, Math.floor(Math.min(.999999, Math.max(0, progress)) * roles.length));
     function syncRoleWithScroll(){
@@ -54,6 +63,65 @@
       window.addEventListener('resize', requestRoleSync);
       requestRoleSync();
     }
+
+    const workflowOverlay = document.querySelector('#workflowOverlay');
+    const workflowFocus = document.querySelector('#workflowFocus');
+    const workflowFocusContent = document.querySelector('#workflowFocusContent');
+    const workflowClose = document.querySelector('#workflowClose');
+    let openedWorkflowIndex = 0;
+    let workflowAdvanceTimer = 0;
+
+    function workflowFocusTemplate(index) {
+      const role = roles[index];
+      const lesson = workflowLessons[index];
+      const next = index + 1;
+      const nextLabel = next < roles.length ? `ไปขั้น ${String(next + 1).padStart(2,'0')}` : 'จบเส้นทางการเรียน';
+      return `<div class="focus-lesson" style="--focus-accent:${role.accent}"><div class="focus-progress"><span>WORKFLOW ${String(index + 1).padStart(2,'0')} / ${String(roles.length).padStart(2,'0')}</span><i><em style="width:${(index + 1) / roles.length * 100}%"></em></i></div><div class="focus-hero"><span class="focus-number">${String(index + 1).padStart(2,'0')}</span><div><div class="eyebrow">AI VIDEO WORKSHOP · ${role.price}</div><h2>${lesson.title}</h2><p>${lesson.intro}</p></div></div><section class="focus-section"><div class="focus-section-label">ทำตามทีละขั้น</div><div class="focus-steps">${lesson.steps.map((step,stepIndex)=>`<article><b>${String(stepIndex + 1).padStart(2,'0')}</b><p>${step}</p></article>`).join('')}</div></section><section class="focus-section"><div class="focus-section-label">PROMPT พร้อมใช้</div><code class="focus-prompt">${role.prompt}</code><button class="focus-copy" type="button" data-focus-prompt="${role.prompt.replace(/"/g,'&quot;')}">คัดลอก Prompt</button></section><section class="focus-section focus-result"><div><div class="focus-section-label">เมื่อทำเสร็จ คุณจะได้</div><h3>${role.output}</h3></div><ul>${lesson.check.map(item=>`<li>${item}</li>`).join('')}</ul></section><div class="focus-scroll-end" id="focusScrollEnd"><span>เลื่อนอ่านจนสุดเพื่อไปขั้นถัดไป</span><button class="focus-next" type="button" data-next-index="${next}">${nextLabel} →</button></div></div>`;
+    }
+
+    function openWorkflowLesson(index) {
+      openedWorkflowIndex = Math.max(0, Math.min(roles.length - 1, index));
+      workflowFocusContent.innerHTML = workflowFocusTemplate(openedWorkflowIndex);
+      workflowFocus.scrollTop = 0;
+      workflowOverlay.setAttribute('aria-hidden','false');
+      document.body.classList.add('workflow-open');
+      requestAnimationFrame(() => { workflowOverlay.classList.add('is-open'); workflowFocus.focus({preventScroll:true}); });
+    }
+
+    function closeWorkflowLesson() {
+      clearTimeout(workflowAdvanceTimer);
+      workflowOverlay.classList.remove('is-open');
+      workflowOverlay.setAttribute('aria-hidden','true');
+      document.body.classList.remove('workflow-open');
+    }
+
+    function advanceWorkflow(nextIndex) {
+      if (nextIndex >= roles.length) { closeWorkflowLesson(); return; }
+      setRole(nextIndex, true);
+      if (mobile) { openWorkflowLesson(nextIndex); return; }
+      closeWorkflowLesson();
+      const journey = rolesSection.offsetHeight - window.innerHeight;
+      const target = window.scrollY + rolesSection.getBoundingClientRect().top + journey * Math.min(.999, nextIndex / roles.length + .002);
+      window.setTimeout(() => window.scrollTo({ top:target, behavior:reduceMotion?'auto':'smooth' }), reduceMotion ? 0 : 220);
+    }
+
+    workflowFocus.addEventListener('click', event => {
+      const copy = event.target.closest('.focus-copy');
+      if (copy) { navigator.clipboard?.writeText(copy.dataset.focusPrompt); copy.textContent='คัดลอกแล้ว ✓'; setTimeout(()=>{copy.textContent='คัดลอก Prompt'},1400); return; }
+      const next = event.target.closest('.focus-next');
+      if (next) advanceWorkflow(Number(next.dataset.nextIndex));
+    });
+    workflowFocus.addEventListener('scroll', () => {
+      const reachedEnd = workflowFocus.scrollTop + workflowFocus.clientHeight >= workflowFocus.scrollHeight - 18;
+      if (!reachedEnd) { clearTimeout(workflowAdvanceTimer); workflowAdvanceTimer = 0; document.querySelector('#focusScrollEnd')?.classList.remove('is-ready'); return; }
+      if (workflowAdvanceTimer || openedWorkflowIndex >= roles.length - 1) return;
+      const endMessage = document.querySelector('#focusScrollEnd');
+      endMessage?.classList.add('is-ready');
+      workflowAdvanceTimer = window.setTimeout(() => { workflowAdvanceTimer = 0; advanceWorkflow(openedWorkflowIndex + 1); }, reduceMotion ? 0 : 700);
+    }, {passive:true});
+    workflowClose.addEventListener('click', closeWorkflowLesson);
+    workflowOverlay.addEventListener('click', event => { if (event.target === workflowOverlay) closeWorkflowLesson(); });
+    window.addEventListener('keydown', event => { if (event.key === 'Escape' && workflowOverlay.classList.contains('is-open')) closeWorkflowLesson(); });
 
     const features = [
       { count:'01 / 04', title:'<span class="gradient-word">คิดไอเดีย เขียน Story</span><br>แบ่งเป็น 10 ฉาก', body:'เริ่มจากคำถาม What If แล้วแปลงเป็นเรื่องสั้นที่มีต้นเรื่อง จุดพลิก และตอนจบในเวลาไม่กี่นาที', type:'story' },
