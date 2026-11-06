@@ -43,7 +43,7 @@
       [...document.querySelectorAll('.role-item')].forEach((item, itemIndex) => item.classList.toggle('is-active', itemIndex === index));
       if (!animate || reduceMotion || !window.gsap) { profileCard.innerHTML = roleTemplate(role); return; }
       gsap.killTweensOf([profileCard, skeleton]);
-      gsap.timeline().to(profileCard, { opacity: 0, y: 16, scale: .985, duration: .16, ease: 'power2.in' }).to(skeleton, { opacity: 1, duration: .1 }, '<').call(() => { profileCard.innerHTML = roleTemplate(role); }).to(skeleton, { opacity: 0, duration: .14, delay: .04 }).to(profileCard, { opacity: 1, y: 0, scale: 1, duration: .42, ease: 'power3.out' }, '<');
+      gsap.timeline().to(profileCard, { opacity: 0, y: 22, scale: .975, duration: .22, ease: 'power2.in', force3D:true }).to(skeleton, { opacity: 1, duration: .16, ease:'power1.out' }, '<').call(() => { profileCard.innerHTML = roleTemplate(role); }).to(skeleton, { opacity: 0, duration: .2, delay: .05, ease:'power1.inOut' }).to(profileCard, { opacity: 1, y: 0, scale: 1, duration: .64, ease: 'power4.out', force3D:true }, '<');
     }
 
     setRole(0, false);
