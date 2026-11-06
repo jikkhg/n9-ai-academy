@@ -39,6 +39,21 @@
 
     setRole(0, false);
     profileCard.addEventListener('click', event => { const button=event.target.closest('.copy-workflow'); if(!button) return; navigator.clipboard?.writeText(button.dataset.workflowPrompt); button.textContent='คัดลอกแล้ว ✓'; button.classList.add('done'); setTimeout(()=>{button.textContent='คัดลอก Prompt';button.classList.remove('done')},1400); });
+    const rolesSection = document.querySelector('#roles');
+    const roleFromProgress = progress => Math.min(roles.length - 1, Math.floor(Math.min(.999999, Math.max(0, progress)) * roles.length));
+    function syncRoleWithScroll(){
+      if (mobile || reduceMotion) return;
+      const rect = rolesSection.getBoundingClientRect();
+      const travel = Math.max(1, rolesSection.offsetHeight - window.innerHeight);
+      setRole(roleFromProgress(-rect.top / travel), true);
+    }
+    if (!mobile && !reduceMotion) {
+      let roleScrollFrame = 0;
+      const requestRoleSync = () => { if (!roleScrollFrame) roleScrollFrame = requestAnimationFrame(() => { roleScrollFrame = 0; syncRoleWithScroll(); }); };
+      window.addEventListener('scroll', requestRoleSync, { passive:true });
+      window.addEventListener('resize', requestRoleSync);
+      requestRoleSync();
+    }
 
     const features = [
       { count:'01 / 04', title:'<span class="gradient-word">คิดไอเดีย เขียน Story</span><br>แบ่งเป็น 10 ฉาก', body:'เริ่มจากคำถาม What If แล้วแปลงเป็นเรื่องสั้นที่มีต้นเรื่อง จุดพลิก และตอนจบในเวลาไม่กี่นาที', type:'story' },
@@ -115,7 +130,7 @@
       gsap.timeline({ defaults:{ease:'power3.out'} }).to('#heroContent > :not(.hero-profile)', { autoAlpha: 1, filter:'blur(0px)', y:0, duration:1.05, stagger:.09, delay:.18 }).to('#heroProfile',{autoAlpha:1,y:0,rotate:0,duration:.9}, '-=.55').to('.floating-work',{autoAlpha:1,scale:1,duration:.7,stagger:.08,ease:'back.out(1.25)'}, '-=.72');
 
       if (!mobile) {
-        ScrollTrigger.create({ trigger:'#roles', start:'top top', end:'bottom bottom', onUpdate:self=>setRole(Math.min(roles.length-1, Math.floor(self.progress * roles.length)), true) });
+        ScrollTrigger.create({ trigger:'#roles', start:'top top', end:'bottom bottom', onUpdate:self=>setRole(roleFromProgress(self.progress), true), onRefresh:syncRoleWithScroll });
         ScrollTrigger.create({ trigger:'#features', start:'top top', end:'bottom bottom', onUpdate:self=>renderFeature(Math.min(features.length-1, Math.floor(self.progress * features.length)), true) });
       }
       const nav = document.querySelector('#navbar');
