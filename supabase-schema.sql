@@ -8,6 +8,11 @@ create table if not exists public.profiles (
   created_at timestamptz not null default now()
 );
 
+alter table public.profiles add column if not exists phone text;
+alter table public.profiles add column if not exists bio text not null default '';
+alter table public.profiles add column if not exists avatar_url text not null default '';
+alter table public.profiles add column if not exists status text not null default 'active' check (status in ('active', 'blocked'));
+
 create table if not exists public.lesson_progress (
   user_id uuid not null references public.profiles(id) on delete cascade,
   lesson_index smallint not null check (lesson_index between 0 and 5),
@@ -48,6 +53,11 @@ alter table public.lesson_progress enable row level security;
 drop policy if exists "profiles: learner can view own" on public.profiles;
 create policy "profiles: learner can view own" on public.profiles
 for select to authenticated using (id = auth.uid() or public.is_admin());
+
+drop policy if exists "profiles: admin can edit learner data" on public.profiles;
+create policy "profiles: admin can edit learner data" on public.profiles
+for update to authenticated using (public.is_admin())
+with check (public.is_admin());
 
 drop policy if exists "progress: learner manages own" on public.lesson_progress;
 create policy "progress: learner manages own" on public.lesson_progress
