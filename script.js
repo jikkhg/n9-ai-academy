@@ -1,5 +1,30 @@
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const mobile = window.matchMedia('(max-width: 800px)').matches;
+    const PROFILE_KEY = 'n9-academy-profile';
+    let currentProfile = JSON.parse(localStorage.getItem(PROFILE_KEY) || 'null');
+    const progressKey = () => currentProfile ? `n9-completed-lessons-${currentProfile.email.toLowerCase()}` : 'n9-completed-lessons-guest';
+    const accountOverlay = document.querySelector('#accountOverlay');
+    const accountCard = document.querySelector('#accountCard');
+    const accountPanel = document.querySelector('#accountPanel');
+    const accountButton = document.querySelector('#accountButton');
+
+    function accountTemplate() {
+      if (currentProfile) return `<div class="account-kicker">N9 AI ACADEMY</div><h2>สวัสดี ${currentProfile.name}</h2><p class="account-copy">คุณกำลังเรียนด้วยอีเมล <b>${currentProfile.email}</b><br>ความคืบหน้าจะถูกบันทึกไว้ในเบราว์เซอร์เครื่องนี้</p><div class="account-status">● สมัครเรียนแล้ว</div><button class="account-primary" type="button" data-go-lessons>ไปเริ่มบทเรียน</button><button class="account-secondary" type="button" data-signout>ออกจากระบบเครื่องนี้</button>`;
+      return `<div class="account-kicker">เริ่มเรียนฟรี</div><h2>สมัครด้วยอีเมล</h2><p class="account-copy">สร้างโปรไฟล์ผู้เรียน เพื่อบันทึกความคืบหน้าของบทเรียนในเครื่องนี้</p><form class="signup-form" id="signupForm"><label>ชื่อที่ใช้เรียน<input name="name" type="text" autocomplete="name" placeholder="เช่น นัท" required maxlength="48"></label><label>อีเมล<input name="email" type="email" autocomplete="email" placeholder="you@email.com" required></label><label class="account-consent"><input name="consent" type="checkbox" required><span>ยอมรับการบันทึกข้อมูลโปรไฟล์ในเบราว์เซอร์นี้</span></label><button class="account-primary" type="submit">สมัครและเริ่มบทเรียน</button></form><p class="account-note">ยังไม่มีการส่งอีเมลหรือเก็บรหัสผ่าน ระบบนี้บันทึกโปรไฟล์เฉพาะในอุปกรณ์นี้</p>`;
+    }
+    function updateAccountUi() {
+      accountButton.textContent = currentProfile ? `สวัสดี, ${currentProfile.name}` : 'สมัครด้วยอีเมล';
+      accountButton.classList.toggle('is-member', Boolean(currentProfile));
+    }
+    function openAccount() { accountPanel.innerHTML = accountTemplate(); accountOverlay.setAttribute('aria-hidden','false'); document.body.classList.add('account-open'); requestAnimationFrame(()=>{accountOverlay.classList.add('is-open');accountCard.focus({preventScroll:true});}); }
+    function closeAccount() { accountOverlay.classList.remove('is-open'); accountOverlay.setAttribute('aria-hidden','true'); document.body.classList.remove('account-open'); }
+    document.querySelectorAll('[data-open-signup]').forEach(button=>button.addEventListener('click',openAccount));
+    document.querySelector('#accountClose').addEventListener('click',closeAccount);
+    accountOverlay.addEventListener('click',event=>{if(event.target===accountOverlay)closeAccount();});
+    accountPanel.addEventListener('submit',event=>{if(event.target.id!=='signupForm')return;event.preventDefault();const form=new FormData(event.target);currentProfile={name:String(form.get('name')).trim(),email:String(form.get('email')).trim()};localStorage.setItem(PROFILE_KEY,JSON.stringify(currentProfile));loadProgress();updateAccountUi();accountPanel.innerHTML=accountTemplate();renderLessonMenu();renderLesson();});
+    accountPanel.addEventListener('click',event=>{if(event.target.closest('[data-go-lessons]')){closeAccount();document.querySelector('#roles').scrollIntoView({behavior:reduceMotion?'auto':'smooth'});}if(event.target.closest('[data-signout]')){currentProfile=null;localStorage.removeItem(PROFILE_KEY);loadProgress();updateAccountUi();accountPanel.innerHTML=accountTemplate();renderLessonMenu();renderLesson();}});
+    window.addEventListener('keydown',event=>{if(event.key==='Escape'&&accountOverlay.classList.contains('is-open'))closeAccount();});
+    updateAccountUi();
 
     const roles = [
       { name:'01 · คิดไอเดีย What If', thai:'เริ่มจากคำถามที่คนอยากรู้คำตอบ', person:'ตั้งต้นไอเดียคลิป', initials:'01', accent:'#7b65d7', avatar:'linear-gradient(135deg,#fe9d98,#815ac4)', projects:'1', rating:'3', reviews:'What If', price:'10 นาที', service:'ของคุ้นเคย + ความผิดปกติ + ผลลัพธ์', works:['#434362','#d8a170','#c97d9c'], teach:'เลือกสิ่งที่คนคุ้นเคย แล้วถามว่า “ถ้ามันอยู่ผิดที่ผิดทางจะเกิดอะไรขึ้น?”', prompt:'ช่วยคิดไอเดีย What If จาก “ตลาดนัดไทย” 5 ไอเดีย แต่ละไอเดียต้องมีปัญหา ตัวละคร และจุดจบใน 1 ประโยค', output:'ได้ไอเดีย 1 ประโยคที่เห็นภาพทันที' },
@@ -163,13 +188,14 @@
     ];
     const lessonMenu = document.querySelector('#lessonMenu');
     const lessonDetail = document.querySelector('#lessonDetail');
-    const completedLessons = new Set(JSON.parse(localStorage.getItem('n9-completed-lessons') || '[]'));
+    const completedLessons = new Set(JSON.parse(localStorage.getItem(progressKey()) || '[]'));
     let activeLesson = 0;
+    function loadProgress(){completedLessons.clear();JSON.parse(localStorage.getItem(progressKey()) || '[]').forEach(index=>completedLessons.add(index));}
     function renderLessonMenu(){ lessonMenu.innerHTML=lessons.map((lesson,index)=>`<button class="lesson-button ${index===activeLesson?'active':''}" data-lesson="${index}"><b>${lesson.no} ${completedLessons.has(index)?'· ✓':''}</b><strong>${lesson.title}</strong></button>`).join(''); }
     function renderLesson(){ const lesson=lessons[activeLesson]; lessonDetail.innerHTML=`<div class="eyebrow">บทเรียน ${lesson.no} / ${lessons.length}</div><h3>${lesson.title}</h3><p>${lesson.summary}</p><div class="lesson-steps">${lesson.steps.map((step,index)=>`<div class="lesson-step"><b>STEP ${index+1}</b><p>${step}</p></div>`).join('')}</div>${lesson.guide||''}<div class="prompt-box"><header><span>PROMPT พร้อมใช้</span><span>ภาษาอังกฤษเพื่อผลลัพธ์ภาพที่สม่ำเสมอ</span></header><code id="lessonPrompt">${lesson.prompt}</code><button class="copy-prompt" id="copyPrompt">คัดลอก Prompt</button><button class="complete-lesson ${completedLessons.has(activeLesson)?'completed':''}" id="completeLesson">${completedLessons.has(activeLesson)?'เรียนจบแล้ว ✓':'ทำเครื่องหมายว่าเรียนจบ'}</button></div><div class="lesson-resource">${lesson.resource}</div>`; updateLessonProgress(); }
     function updateLessonProgress(){const percent=Math.round(completedLessons.size/lessons.length*100);document.querySelector('#lessonPercent').textContent=percent+'%';document.querySelector('#lessonProgress').style.width=percent+'%';}
     lessonMenu.addEventListener('click',event=>{const button=event.target.closest('[data-lesson]');if(!button)return;activeLesson=Number(button.dataset.lesson);renderLessonMenu();renderLesson();lessonDetail.scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'center'});});
-    lessonDetail.addEventListener('click',event=>{if(event.target.id==='copyPrompt'){navigator.clipboard?.writeText(document.querySelector('#lessonPrompt').textContent);event.target.textContent='คัดลอกแล้ว ✓';event.target.classList.add('done');setTimeout(()=>{event.target.textContent='คัดลอก Prompt';event.target.classList.remove('done')},1400)}if(event.target.id==='completeLesson'){completedLessons.has(activeLesson)?completedLessons.delete(activeLesson):completedLessons.add(activeLesson);localStorage.setItem('n9-completed-lessons',JSON.stringify([...completedLessons]));renderLessonMenu();renderLesson();}});
+    lessonDetail.addEventListener('click',event=>{if(event.target.id==='copyPrompt'){navigator.clipboard?.writeText(document.querySelector('#lessonPrompt').textContent);event.target.textContent='คัดลอกแล้ว ✓';event.target.classList.add('done');setTimeout(()=>{event.target.textContent='คัดลอก Prompt';event.target.classList.remove('done')},1400)}if(event.target.id==='completeLesson'){completedLessons.has(activeLesson)?completedLessons.delete(activeLesson):completedLessons.add(activeLesson);localStorage.setItem(progressKey(),JSON.stringify([...completedLessons]));renderLessonMenu();renderLesson();}});
     renderLessonMenu(); renderLesson();
 
     const teachingScripts = [
