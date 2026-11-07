@@ -231,15 +231,6 @@
     scriptGrid.innerHTML=teachingScripts.map((item,index)=>`<article class="script-card"><span class="script-tag">${item.tag}</span><h3>${item.title}</h3><p>${item.desc}</p><div class="script-flow">${item.flow.map((step,stepIndex)=>`<span><b>${stepIndex+1}</b>${step}</span>`).join('')}</div><button class="copy-script" data-script="${index}">คัดลอก Prompt สคริปต์</button><textarea class="script-source" aria-hidden="true">${item.prompt}</textarea></article>`).join('');
     scriptGrid.addEventListener('click',event=>{const button=event.target.closest('[data-script]');if(!button)return;const source=button.parentElement.querySelector('.script-source').value;navigator.clipboard?.writeText(source);button.textContent='คัดลอกแล้ว ✓';button.classList.add('done');setTimeout(()=>{button.textContent='คัดลอก Prompt สคริปต์';button.classList.remove('done')},1400)});
 
-    function setupCountdown() {
-      const target = Date.now() + (9 * 86400 + 15 * 3600 + 5 * 60 + 31) * 1000;
-      const ids = ['countDays','countHours','countMins','countSecs'];
-      const pad = value => String(Math.max(0, value)).padStart(2, '0');
-      function tick() { let seconds = Math.max(0, Math.floor((target - Date.now()) / 1000)); const values=[Math.floor(seconds/86400),Math.floor(seconds%86400/3600),Math.floor(seconds%3600/60),seconds%60]; values.forEach((value,index)=>document.getElementById(ids[index]).textContent=pad(value)); }
-      tick(); setInterval(tick, 1000);
-    }
-    setupCountdown();
-
     if (window.gsap && window.ScrollTrigger && !reduceMotion) {
       gsap.registerPlugin(ScrollTrigger);
       gsap.set('#heroContent > :not(.hero-profile)', { autoAlpha: .3, filter: 'blur(20px)', y: 18 });
